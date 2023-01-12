@@ -51,7 +51,8 @@ Here we make a new object `my_experiment` that is the sum of the treatment and c
 my_experiment <- sum(treatment, control)
 my_experiment
 ```
-
+ add another "my_experiment" to check and to show when you knit
+ 
 ## Nomenclature
 We need to be careful about nomenclature when we write code. R allows us to give almost any name we want to an object, but there are exceptions. For example, we don't want to give a name to an object that is the same as a function in R.  
 ```{r eval=FALSE, include=TRUE}
@@ -65,16 +66,26 @@ We get an error here because `else` is a function in R. You also don't want to g
 ```{r}
 venom_GT <- 270
 ```
+```{r}
+chiron <- 261
+```
+```{r}
+veyron <- 268
+```
 
 2. Use arithmetic to calculate the mean top speed for the cars.
 ```{r}
-
+(venom_GT+chiron+veyron)/3
 ```
 
 3. Use the function `mean()` to calculate the mean top speed for the cars.
 ```{r}
-
+mean(cars)
 ```
+```{r}
+cars <- c(venom_GT, chiron,veyron)
+```
+Concatenate all the values to make sure the mean function doesn't round!!!
 
 ## Types of Data
 There are five frequently used `classes` of data: 1. numeric, 2. integer, 3. character, 4. logical, 5. complex.
@@ -129,15 +140,18 @@ new_vector <- c(7, 6.2, 5, 9, NA, 4, 9.8, 7, 3, 2)
 
 2. As we did in homework 1, calculate the mean of `new_vector`.
 ```{r}
-
+mean(new_vector)
 ```
 
 3. How do you interpret this result? What does this mean about NAs?  
+
+I think this means that there is a missing value in the data set, so NA is used as a placeholder. The mean calculation could not be done with the placeholder 'NA' present in the data.
 
 4. Recalculate the mean using the following code chunk. Why is the useful?  
 ```{r}
 mean(new_vector, na.rm=T) #na.rm removes the NA values in the vector
 ```
+This is useful because this removes the NA placeholder, allowing the mean calculation to take place.
 
 ## That's it! Let's take a break and then move on to part 2!
 

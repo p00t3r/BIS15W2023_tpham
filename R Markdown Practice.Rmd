@@ -1,0 +1,15 @@
+#Title
+####Title
+_italics_  sds
+**bold** sdsd
+[Name of Website](insertthe link)
+[Tim Pham](mailto: timpham@ucdavis.edu)
+```{r}
+#install.packages("tidyverse")
+library("tidyverse")
+```
+
+```{r}
+ggplot(mtcars, aes(x = factor(cyl))) +
+    geom_bar()
+```

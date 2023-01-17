@@ -1,0 +1,61 @@
+---
+title: "Lab 3 Intro Practice"
+output: html_document
+date: "2023-01-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+```{r}
+PlantHeight_1 <- c(30.7)
+PlantHeight_2 <- c(37.6)
+PlantHeight_3 <- c(28.4)
+PlantHeight_4 <- c(NA)
+PlantHeight_5 <- c(33.2)
+Plant_Heights <- c(PlantHeight_1, PlantHeight_2, PlantHeight_3, PlantHeight_4, PlantHeight_5)
+Plant_Heights
+```
+```{r}
+PlantMass_1 <- c(4)
+PlantMass_2 <- c(5.2)
+PlantMass_3 <- c(3.7)
+PlantMass_4 <- c(NA)
+PlantMass_5 <- c(4.6)
+Plant_Masses <- c(PlantMass_1, PlantMass_2, PlantMass_3, PlantMass_4, PlantMass_5)
+Plant_Masses
+```
+
+```{r}
+Plant_Matrix <-matrix(Plant_Experiment, nrow=5, byrow = F)
+Plant_Matrix
+```
+```{r}
+Plant_Names <- c("Plant 1", "Plant 2", "Plant 3", "Plant 4", "Plant 5")
+row.names(Plant_Matrix) <- Plant_Names
+Plant_Matrix
+
+```
+```{r}
+Plant_Experiment <- c(Plant_Heights, Plant_Masses)
+Plant_Experiment
+```
+
+```{r}
+Column_Names <- c("Height", "Mass")
+colnames(Plant_Matrix) <- Column_Names
+Plant_Matrix
+```
+```{r}
+Plant_Means <- colMeans(Plant_Matrix, na.rm=T)
+Plant_Means
+Plant_Matrix
+```
+
+```{r}
+Plant_Matrix_Final <- rbind(Plant_Matrix, Plant_Means)
+Plant_Matrix_Final
+```
+

@@ -20,14 +20,45 @@ library("jpeg")
 ## Review from last time
 ### *With a partner, discuss the following questions*
 1. What are examples of different classes of objects in R?
+Integers(whole number), Numerics(), Character, Logical (t/F), Complex
+
 2. What is a vector? What is the command to make a vector in R?
+A vector is a method to organize data of the same class. The c command is used to create a vector.
+
 3. What is a data matrix and how does a data matrix relate to vectors?
+Series of stacked vectors, used to organize data into a table
+
 4. Do you have any questions from homework 2?
+What is byrow?
 
 ## Warm-up
 1. Build a vector that includes the following height measurements for five plants:
 plant 1 30.7, plant 2 37.6, plant 3 28.4, plant 4 NA, plant 5 33.2
+```{r}
+PlantHeight_1 <- c(30.7)
+PlantHeight_2 <- c(37.6)
+PlantHeight_3 <- c(28.4)
+PlantHeight_4 <- c(NA)
+PlantHeight_5 <- c(33.2)
+Plant_Heights <- c(PlantHeight_1, PlantHeight_2, PlantHeight_3, PlantHeight_4, PlantHeight_5)
+Plant_Heights
+```
+
 2. Build another vector that includes the following mass measurements:
 plant 1 4, plant 2 5.2, plant 3 3.7, plant 4 NA, plant 5 4.6
+```{r}
+PlantMass_1 <- c(4)
+PlantMass_2 <- c(5.2)
+PlantMass_3 <- c(3.7)
+PlantMass_4 <- c(NA)
+PlantMass_5 <- c(4.6)
+Plant_Masses <- c(PlantMass_1, PlantMass_2, PlantMass_3, PlantMass_4, PlantMass_5)
+Plant_Masses
+```
+
 3. Assemble these vectors into a labeled data matrix with two columns
+```{r}
+Plant_Matrix <-matrix(Plant_Heights, nrow=5, byrow = T)
+```
+
 4. Calculate the mean for height and mass and add them to the data matrix

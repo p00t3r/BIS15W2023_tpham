@@ -175,7 +175,7 @@ str(mammals)
 glimpse(mammals)
 ```
 
-5. . Try the `table()` command to produce counts of mammal order, family, and genus.  
+5. . Try the `table()` command to produce counts of mammal order, family, and genus.  #one table at a time
 ```{r}
 table(mammals$order)
 ```

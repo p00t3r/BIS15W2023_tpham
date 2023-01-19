@@ -74,7 +74,6 @@ levels(hot_springs$scientist)
 The data are from: Gaeta J., G. Sass, S. Carpenter. 2012. Biocomplexity at North Temperate Lakes LTER: Coordinated Field Studies: Large Mouth Bass Growth 2006. Environmental Data Initiative.  [link](https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-ntl&identifier=267)
 #windows users: turn the forntslashes to backslashes
 ```{r}
-setwd("/Users/pooter/Desktop/BIS15W2023_tpham/lab3/")
 getwd()
 ```
 

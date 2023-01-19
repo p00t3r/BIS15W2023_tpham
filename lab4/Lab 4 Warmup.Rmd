@@ -1,0 +1,50 @@
+---
+title: "Lab 4 Warm-Up"
+output: 
+  html_document: 
+    keep_md: yes
+date: "2023-01-19"
+---
+
+1. In a new R Markdown document, load the tidyverse and a package called `palmerpenguins`.
+```{r}
+install.packages("tidyverse")
+```
+
+```{r}
+install.packages("palmerpenguins")
+```
+
+2. What are the dimensions of the dataset `penguins`?
+
+```{r}
+library("palmerpenguins")
+```
+```{r}
+library("tidyverse")
+```
+
+```{r}
+dim(penguins)
+nrow(penguins)
+```
+The data set penguins has 344 observations and 8 variables.
+
+3. What are the names of the variables in the `penguins` dataset?
+```{r}
+names(penguins)
+```
+
+4. How many individuals were sampled on each island in the `penguins` dataset?
+```{r}
+table(penguins$island)
+```
+
+5. What is the mean body mass for all individuals in the `penguins` dataset?
+
+```{r}
+mean(penguins$body_mass_g, na.rm=T)
+```
+
+
+

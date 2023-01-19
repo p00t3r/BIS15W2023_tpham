@@ -1,7 +1,9 @@
 ---
 title: "Lab 4 Intro"
 date: "`r Sys.Date()`"
-output: ioslides_presentation
+output: 
+  ioslides_presentation: 
+    keep_md: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -19,12 +21,21 @@ library("jpeg")
 
 ## Review from last time
 ### *With a partner, discuss the following questions*
-1. How is a data frame and how is it different than a data matrix?  
+1. How is a data frame and how is it different than a data matrix? 
+
+A data frame is formatted like an organized spreadsheet. It can be generated from data of an imported .csv file and can utilize different classes of data. A data matrix is formatted like a data table, in which it is built from previously established vectors. A data frame looks cleaner and more user-friendly compared to a data matrix.
+
 2. What is the command we use to import .csv files into R?  
+
+The command  readr::read_csv("[insert name of csv file here.csv]") is used to import .csv files into R.
+
 3. Take a moment to show your repository on GitHub to a partner. Can you make any improvements?  
+
+I think I could clean up the misc. files in my repository to make it look more organized and neat. I could also work on my readme.md file because it is very simple and boring. It could use some character development.
 
 ## Warm-up
 1. In a new R Markdown document, load the tidyverse and a package called `palmerpenguins`.
+
 2. What are the dimensions of the dataset `penguins`?
 3. What are the names of the variables in the `penguins` dataset?
 4. How many individuals were sampled on each island in the `penguins` dataset?

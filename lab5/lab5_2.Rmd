@@ -125,29 +125,44 @@ bad_guys %>%
 ```{r}
 good_guys %>% 
   filter(hair_color=="No Hair") 
-
 ```
+```{r}
+tabyl(good_guys, hair_color)
+```
+```{r}
+tabyl(bad_guys, hair_color)
+```
+There are more bald people among the good guys.
 
 10. Let's explore who the really "big" superheros are. In the `superhero_info` data, which have a height over 200 or weight greater than or equal to 450?
 ```{r}
-
+superhero_info %>% 
+  filter(height>200 | weight>=450)
 ```
 
 11. Just to be clear on the `|` operator,  have a look at the superheros over 300 in height...
 ```{r}
-
+superhero_info %>% 
+  filter(height>300)
 ```
 
 12. ...and the superheros over 450 in weight. Bonus question! Why do we not have 16 rows in question #10?
 ```{r}
-
+superhero_info %>% 
+  filter(weight>450)
 ```
+We don't have 16 rows in Q10 because we used " | " to denote that we want to filter superheroes that have a height over 200 or weight greater than or equal to 450. Using " & " instead would denote we want superheroes that have a height over 200 and weight greater than or equal to 450, resulting in less rows because it is more specific.
+
 
 ## Height to Weight Ratio
 13. It's easy to be strong when you are heavy and tall, but who is heavy and short? Which superheros have the highest height to weight ratio?
 ```{r}
+superhero_info %>% 
+mutate(height_weight_ratio = height/weight) %>% 
+arrange(desc(height_weight_ratio))
 
 ```
+Flora Colossus has the highest height to weight ratio by far, at over 175.
 
 ## `superhero_powers`
 Have a quick look at the `superhero_powers` data frame.  
@@ -157,14 +172,19 @@ glimpse(superhero_powers)
 
 14. How many superheros have a combination of accelerated healing, durability, and super strength?
 ```{r}
+superhero_powers %>% 
+  filter(accelerated_healing==TRUE & durability==TRUE & super_strength==TRUE)
 
 ```
+There are 97 superheroes that have a combination accelerated healing, durability, and super strength.
 
 ## Your Favorite
 15. Pick your favorite superhero and let's see their powers!
 ```{r}
-
+superhero_powers %>% 
+  filter(hero_names=="Black Widow")
 ```
+My bae Black Widow has agility, stealth, marksmanship, longevity, intelligence, stamina, and others. It's too bad one of her powers isn't plot armor because she died. #sad_face_emoji
 
 ## Push your final code to GitHub!
 Please be sure that you check the `keep md` file in the knit preferences.  

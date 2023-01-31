@@ -1,0 +1,353 @@
+---
+title: "CHEAT SHEET!"
+output: 
+  html_document: 
+    keep_md: yes
+date: "2023-01-31"
+---
+```{r}
+#Load the tidyverse and janitor package!
+
+install.packages("tidyverse")
+library(tidyverse)
+
+install.packages("janitor")
+library(janitor)
+
+install.packages("skimr")
+library("skimr")
+```
+
+**FORMATTING*
+#title
+_italics_
+**bold**
+
+Insert website link:
+[webpage name](website URL)
+
+Insert email link:
+[person name](mailto:emailaddress)`
+
+**LAB 1**
+
+```{r}
+#Get working directory.
+
+getwd()
+```
+
+```{r}
+#Make a vector/assign objects.
+
+x <- c(4, 6, 8, 5, 6, 7, 7, 7)
+```
+
+```{r}
+#Basic Calculations
+
+mean()
+median()
+sd()
+```
+
+**LAB 2**
+
+```{r}
+object_total <- sum(object_1, object_2)
+```
+
+```{r}
+#Data Types
+
+my_numeric <- 42
+my_integer <- 2L #adding an L automatically denotes an integer
+my_character <- "universe"
+my_logical <- FALSE
+my_complex <- 2+4i
+```
+
+```{r}
+#Specifying Kind of Data
+
+class(my_numeric)
+is.integer(my_numeric) #is my_numeric an integer?
+my_integer <- as.integer(my_numeric) #create a new object specified as an integer
+
+```
+
+```{r}
+#Missing Data
+
+my_missing <- NA
+is.na(my_missing)
+anyNA(my_missing)
+mean(new_vector, na.rm=T) #na.rm removes the NA values in the vector
+```
+
+```{r}
+#Vectors
+ 
+my_vector <- c(10, 20, 30) #Numeric Vector
+days_of_the_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")     #Character Vector
+my_vector_sequence <- c(1:100)
+
+days_of_the_week[3] #pulls out 3rd data point in vector
+my_vector_sequence[my_vector_sequence<10] #use operators such as <, >, ==, <==
+```
+
+#Data Matrices
+```{r}
+#STEP ONE: Make all the vectors.
+
+Philosophers_Stone <- c(317.5, 657.1)
+Chamber_of_Secrets <- c(261.9, 616.9)
+Prisoner_of_Azkaban <- c(249.5, 547.1)
+Goblet_of_Fire <- c(290.0, 606.8)
+Order_of_the_Phoenix <- c(292.0, 647.8)
+Half_Blood_Prince <- c(301.9, 632.4)
+Deathly_Hallows_1 <- c(295.9, 664.3)
+Deathly_Hallows_2 <- c(381.0, 960.5)
+```
+
+```{r}
+#STEP TWO: Combine all vectors into one object.
+
+box_office <- c(Philosophers_Stone, Chamber_of_Secrets, Prisoner_of_Azkaban, Goblet_of_Fire, Order_of_the_Phoenix, Half_Blood_Prince, Deathly_Hallows_1, Deathly_Hallows_2)
+```
+
+```{r}
+#STEP THREE: Create matrix with matrix() 
+
+harry_potter_matrix <- matrix(box_office, nrow = 8, byrow = T)
+```
+
+```{r}
+#STEP FOUR: Name the rows and columns.
+
+region <- c("US", "non-US")
+titles <- c("Philosophers_Stone", "Chamber_of_Secrets", "Prisoner_of_Azkaban", "Goblet_of_Fire", "Order_of_the_Phoenix", "Half_Blood_Prince", "Deathly_Hallows_1", "Deathly_Hallows_2")
+
+colnames(harry_potter_matrix) <- region
+rownames(harry_potter_matrix) <- titles
+```
+
+
+```{r}
+#Using Data Matrices
+
+global <- rowSums(harry_potter_matrix)
+
+all_harry_potter_matrix <- cbind(harry_potter_matrix, global)    #Add new column
+harry_potter_matrix[2,1]                                         #Selects the value in the first column, second row.
+harry_potter_matrix[1:4]                                         #Selects the specified elements in a column
+non_us_earnings <- all_harry_potter_matrix[ ,2]                  #Select values in the entire 2nd column.    [ROW, COLUMN]
+```
+
+**LAB 3**
+
+#Data Frames
+```{r}
+Sex <- c("male", "female", "male")    #Establish the vectors.
+Length <- c(3.2, 3.7, 3.4)
+Weight <- c(2.9, 4.0, 3.1)
+```
+
+```{r}
+hbirds <- data.frame(Sex, Length, Weight)  #Create the data frame with data.frame().
+```
+
+```{r}
+names()       #Names of variables.
+dim(hbirds)   #To find dimensions!
+str()
+```
+
+```{r}
+#Renaming Variables
+
+hbirds <- data.frame(sex = Sex, length_in = Length, weight_oz = Weight) 
+```
+
+```{r}
+#[ROW, COLUMN]
+
+hbirds[1,]      #1st Row
+hbirds[ ,3]     #3rd Column
+```
+
+```{r}
+#Select values in an entire column using the `$` sign
+
+w <- hbirds$weight_oz    
+w
+mean(w)
+```
+
+
+```{r}
+#Add a row using rbind().
+
+new_bird <- c("female", 3.6, 3.9)  
+hbirds<- rbind(hbirds, new_bird)
+
+#Add a column,
+hbirds$neighborhood <- c("lakewood", "brentwood", "lakewood", "scenic Heights")
+```
+
+```{r}
+# Writing Data to File
+
+write.csv(hbirds, "hbirds_data.csv", row.names = FALSE)
+```
+
+```{r}
+#Import .csv files.
+
+hot_springs <- readr::read_csv("hsprings_data.csv")
+```
+
+```{r}
+#Change variable scientist to factor (change class)
+
+hot_springs$scientist <- as.factor(hot_springs$scientist)
+class(hot_springs$scientist)
+```
+
+```{r}
+#Summary Function
+
+summary()
+glimpse()
+dim()
+nrow()
+ncol()
+names()     #names of variables
+head(fish, n = 10)
+tail(fish, n = 10)
+max()
+```
+
+
+```{r}
+table(fish$lakeid)
+little_fish <- filter(fish, length<=100)   #Filter
+```
+
+ **LAB 4**
+
+```{r}
+#select
+
+select()
+select(fish, fish_id:length)                                        #select in between fish_id and length
+select(fish, -fish_id, -annnumber, -length, -radii_length_mm)       #pulls everything except certain variables
+select(fish, contains("length"))                                    #only variavles with length in the name
+select(fish, starts_with("radii"))                                  #what variable starts with
+
+Options to select columns based on a specific criteria include:  
+1. ends_with() = Select columns that end with a character string  
+2. contains() = Select columns that contain a character string  
+3. matches() = Select columns that match a regular expression  
+4. one_of() = Select columns names that are from a group of names 
+
+select_if(fish, is.numeric)
+select_if(fish, ~!is.numeric(.)) #Select all columns that are *not* a class of data
+```
+
+
+```{r}
+#filter
+
+filter(fish, lakeid == "AL")
+filter(fish, length >= 350)
+filter(fish, lakeid != "AL")                       #Exclude certain observations
+filter(fish, length %in% c(167, 175))              #Filtering multiple values within the same variable
+filter(fish, between(scalelength, 2.5, 2.55))      #Range of specific values
+filter(fish, near(radii_length_mm, 2, tol = 0.2))  #Extract observations "near" a certain value but you need to specify a tolerance.
+
+filter(fish, lakeid == "AL" & length > 350)        #and
+filter(fish, lakeid == "AL" | length > 350)        #or
+```
+
+**LAB 5**
+
+
+```{r}
+mammals %>% mutate_if(is.character, as.factor)      #shift + command + m     #if it is character, change it into factor
+```
+
+
+```{r}
+#arrange
+
+arrange(scalelength)                                #default is ascending order
+arrange(desc(scalelength))                          #descending order
+```
+
+
+```{r}
+mutate(length_mm = length*10)                       #Create a new column from existing columns in a data frame
+mutate_all(tolower)                                 #Changes all entries to lowercase.
+mutate(across(c("order", "family"), tolower))       #Specify individual columns
+```
+
+
+```{r}
+#if_else()
+
+mammals %>% 
+  select(genus, species, newborn) %>%
+  mutate(newborn_new = ifelse(newborn == -999.00, NA, newborn))%>%     #Replace NA placeholders with NA
+  arrange(newborn)
+```
+
+
+```{r}
+#janitor
+
+superhero_powers <- janitor::clean_names(superhero_powers)  #clean names
+tabyl(superhero_info, alignment)
+```
+
+**LAB 6**
+
+```{r}
+summary()
+hist()        #histogram
+skim()        #find number of unique observations within a variable
+summarize()   #produce summary statistics for a given variable in a data frame
+```
+
+
+```{r}
+#n_distinct()
+
+msleep %>%                                  #presenting the number of distinct observations
+  filter(bodywt > 100) %>% 
+  summarise(n_genera=n_distinct(genus))
+```
+
+
+```{r}
+#count()
+penguins %>% 
+  count(island, sort = T)                   #sort=T sorts the column in descending order
+```
+
+
+```{r}
+#across()
+penguins %>%
+  summarize(across(c(species, island, sex), n_distinct))      # using `filter()` and `select() across multiple variables
+
+penguins %>%
+  group_by(sex) %>% 
+  summarize(across(contains("mm"), mean, na.rm=T))
+
+penguins %>%
+  summarize(across(contains("mm"), mean, na.rm=T))
+```
+
+
+```{r}

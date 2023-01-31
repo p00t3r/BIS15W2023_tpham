@@ -52,9 +52,7 @@ ecosphere %>%
 
 Problem 4. (2 points) Which habitat has the highest diversity (number of species) in the data?
 ```{r}
-ecosphere %>% 
-  select("habitat", "population_size") %>% 
-  arrange(desc(population_size))
+tabyl(ecosphere, habitat)   #Woodland habitat is the habitat with the most amount of species.
 ```
 
 Run the code below to learn about the `slice` function. Look specifically at the examples (at the bottom) for `slice_max()` and `slice_min()`. If you are still unsure, try looking up examples online (https://rpubs.com/techanswers88/dplyr-slice). Use this new function to answer question 5 below.
@@ -86,7 +84,7 @@ ducks
 Problem 7. (2 points) We might assume that all ducks live in wetland habitat. Is this true for the ducks in these data? If there are exceptions, list the species below.
 ```{r}
 ducks %>% 
-  tabyl(habitat)
+      tabyl(habitat)
 ```
 ```{r}
 ducks %>% 
@@ -96,11 +94,10 @@ ducks %>%
 Problem 8. (4 points) In ducks, how is mean body mass associated with migratory strategy? Do the ducks that migrate long distances have high or low average body mass?
 ```{r}
 ducks %>% 
-  select("log10_mass", "migratory_strategy") %>% 
-  arrange(migratory_strategy)
+  select("migratory_strategy", "log10_mass") %>%
+  mutate(avg_body_mass = mean(log10_mass)) %>% 
+  arrange(migratory_strategy)                            #Ducks that migrate long distances have a somewhat low average body mass.
 ```
-Ducks that migrate long distances have a somewhat low average body mass.
-
 Problem 9. (2 points) Accipitridae is the family that includes eagles, hawks, kites, and osprey. First, make a new object `eagles` that only includes species in the family Accipitridae. Next, restrict these data to only include the variables common_name, scientific_name, and population_size.
 ```{r}
 eagles <- filter(ecosphere, family == "Accipitridae") %>%
@@ -117,9 +114,15 @@ eagles %>%
 
 Problem 11. (2 points) Consider the results from questions 9 and 10. Are there any species for which their threatened status needs further study? How do you know?
 ```{r}
-anyNA(eagles)
+anyNA(eagles)    
+#Yes, there are eagle species among the data set that have 'NA' as their population size value, meaning those species needs further study/data in order to find out their conservation status.
 ```
-Yes, there are eagle species among the data set that have 'NA' as their population size value, meaning those speies needs fruther study/data in order to find out their conservation status.
+```{r}
+eagles %>% 
+  mutate(conservation_status = population_size < 250000) %>% 
+  arrange(desc(population_size))
+```
+
 
 Problem 12. (4 points) Use the `ecosphere` data to perform one exploratory analysis of your choice. The analysis must have a minimum of three lines and two functions. You must also clearly state the question you are attempting to answer.
 ```{r}
@@ -129,16 +132,15 @@ glimpse(ecosphere)
 ```{r}
 ecosphere %>% 
   filter(family == "Emberizidae") %>% 
-  summarise(common_name, diet, log10_mass) %>% 
-  arrange(desc(log10_mass))
+  tabyl(diet)
   
-# I am trying to find out if there is any correlation between sparrows' average mass and their diet type. Overall, I'm
+# I am trying to find out the diet types of birds that belong to the Emberizidae family.
 ```
 
 
 Please provide the names of the students you have worked with with during the exam:
 ```{r}
-#just me!
+#Emily Lieu
 ```
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.

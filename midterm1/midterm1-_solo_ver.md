@@ -126,26 +126,18 @@ ecosphere %>%
 Problem 4. (2 points) Which habitat has the highest diversity (number of species) in the data?
 
 ```r
-ecosphere %>% 
-  select("habitat", "population_size") %>% 
-  arrange(desc(population_size))
+tabyl(ecosphere, habitat)   #Woodland habitat is the habitat with the most amount of species.
 ```
 
 ```
-## # A tibble: 551 × 2
-##    habitat   population_size
-##    <chr>               <dbl>
-##  1 Woodland        300000000
-##  2 Woodland        210000000
-##  3 Woodland        200000000
-##  4 Grassland       170000000
-##  5 Woodland        140000000
-##  6 Various         130000000
-##  7 Woodland        130000000
-##  8 Various         120000000
-##  9 Various         110000000
-## 10 Woodland        110000000
-## # … with 541 more rows
+##    habitat   n    percent valid_percent
+##  Grassland  36 0.06533575    0.06703911
+##      Ocean  44 0.07985481    0.08193669
+##  Shrubland  82 0.14882033    0.15270019
+##    Various  45 0.08166969    0.08379888
+##    Wetland 153 0.27767695    0.28491620
+##   Woodland 177 0.32123412    0.32960894
+##       <NA>  14 0.02540835            NA
 ```
 
 Run the code below to learn about the `slice` function. Look specifically at the examples (at the bottom) for `slice_max()` and `slice_min()`. If you are still unsure, try looking up examples online (https://rpubs.com/techanswers88/dplyr-slice). Use this new function to answer question 5 below.
@@ -217,7 +209,7 @@ Problem 7. (2 points) We might assume that all ducks live in wetland habitat. Is
 
 ```r
 ducks %>% 
-  tabyl(habitat)
+      tabyl(habitat)
 ```
 
 ```
@@ -248,28 +240,27 @@ Problem 8. (4 points) In ducks, how is mean body mass associated with migratory 
 
 ```r
 ducks %>% 
-  select("log10_mass", "migratory_strategy") %>% 
-  arrange(migratory_strategy)
+  select("migratory_strategy", "log10_mass") %>%
+  mutate(avg_body_mass = mean(log10_mass)) %>% 
+  arrange(migratory_strategy)                            #Ducks that migrate long distances have a somewhat low average body mass.
 ```
 
 ```
-## # A tibble: 44 × 2
-##    log10_mass migratory_strategy
-##         <dbl> <chr>             
-##  1       2.89 Long              
-##  2       2.85 Long              
-##  3       2.96 Moderate          
-##  4       3.11 Moderate          
-##  5       3.02 Moderate          
-##  6       2.56 Moderate          
-##  7       3.33 Moderate          
-##  8       3    Moderate          
-##  9       3.4  Moderate          
-## 10       2.75 Moderate          
+## # A tibble: 44 × 3
+##    migratory_strategy log10_mass avg_body_mass
+##    <chr>                   <dbl>         <dbl>
+##  1 Long                     2.89          3.04
+##  2 Long                     2.85          3.04
+##  3 Moderate                 2.96          3.04
+##  4 Moderate                 3.11          3.04
+##  5 Moderate                 3.02          3.04
+##  6 Moderate                 2.56          3.04
+##  7 Moderate                 3.33          3.04
+##  8 Moderate                 3             3.04
+##  9 Moderate                 3.4           3.04
+## 10 Moderate                 2.75          3.04
 ## # … with 34 more rows
 ```
-Ducks that migrate long distances have a somewhat low average body mass.
-
 Problem 9. (2 points) Accipitridae is the family that includes eagles, hawks, kites, and osprey. First, make a new object `eagles` that only includes species in the family Accipitridae. Next, restrict these data to only include the variables common_name, scientific_name, and population_size.
 
 ```r
@@ -341,13 +332,50 @@ eagles %>%
 Problem 11. (2 points) Consider the results from questions 9 and 10. Are there any species for which their threatened status needs further study? How do you know?
 
 ```r
-anyNA(eagles)
+anyNA(eagles)    
 ```
 
 ```
 ## [1] TRUE
 ```
-Yes, there are eagle species among the data set that have 'NA' as their population size value, meaning those speies needs fruther study/data in order to find out their conservation status.
+
+```r
+#Yes, there are eagle species among the data set that have 'NA' as their population size value, meaning those species needs further study/data in order to find out their conservation status.
+```
+
+```r
+eagles %>% 
+  mutate(conservation_status = population_size < 250000) %>% 
+  arrange(desc(population_size))
+```
+
+```
+## # A tibble: 20 × 4
+##    common_name         scientific_name          population_size conservation_s…¹
+##    <chr>               <chr>                              <dbl> <lgl>           
+##  1 Red-tailed Hawk     Buteo jamaicensis                2000000 FALSE           
+##  2 Broad-winged Hawk   Buteo platypterus                1700000 FALSE           
+##  3 Red-shouldered Hawk Buteo lineatus                   1100000 FALSE           
+##  4 Cooper's Hawk       Accipiter cooperii                700000 FALSE           
+##  5 Northern Harrier    Circus cyaneus                    700000 FALSE           
+##  6 Swainson's Hawk     Buteo swainsoni                   540000 FALSE           
+##  7 Sharp-shinned Hawk  Accipiter striatus                500000 FALSE           
+##  8 Rough-legged Hawk   Buteo lagopus                     300000 FALSE           
+##  9 Northern Goshawk    Accipiter gentilis                200000 TRUE            
+## 10 Golden Eagle        Aquila chrysaetos                 130000 TRUE            
+## 11 Ferruginous Hawk    Buteo regalis                      80000 TRUE            
+## 12 Harris's Hawk       Parabuteo unicinctus               50000 TRUE            
+## 13 Bald Eagle          Haliaeetus leucocephalus              NA NA              
+## 14 Gray Hawk           Buteo nitidus                         NA NA              
+## 15 Hook-billed Kite    Chondrohierax uncinatus               NA NA              
+## 16 Short-tailed Hawk   Buteo brachyurus                      NA NA              
+## 17 Snail Kite          Rostrhamus sociabilis                 NA NA              
+## 18 White-tailed Hawk   Buteo albicaudatus                    NA NA              
+## 19 White-tailed Kite   Elanus leucurus                       NA NA              
+## 20 Zone-tailed Hawk    Buteo albonotatus                     NA NA              
+## # … with abbreviated variable name ¹​conservation_status
+```
+
 
 Problem 12. (4 points) Use the `ecosphere` data to perform one exploratory analysis of your choice. The analysis must have a minimum of three lines and two functions. You must also clearly state the question you are attempting to answer.
 
@@ -385,36 +413,25 @@ glimpse(ecosphere)
 ```r
 ecosphere %>% 
   filter(family == "Emberizidae") %>% 
-  summarise(common_name, diet, log10_mass) %>% 
-  arrange(desc(log10_mass))
+  tabyl(diet)
 ```
 
 ```
-## # A tibble: 43 × 3
-##    common_name                          diet          log10_mass
-##    <chr>                                <chr>              <dbl>
-##  1 California and Canyon/Brown Towhee # Seed                1.69
-##  2 Abert's Towhee                       Invertebrates       1.68
-##  3 McKay's Bunting                      Omnivore            1.63
-##  4 Snow Bunting                         Seed                1.63
-##  5 Eastern and Spotted Towhee _         Omnivore            1.61
-##  6 Lark Bunting                         Seed                1.58
-##  7 Harris's Sparrow                     Seed                1.55
-##  8 Fox Sparrow                          Omnivore            1.54
-##  9 Golden-crowned Sparrow               Omnivore            1.5 
-## 10 Green-tailed Towhee                  Omnivore            1.46
-## # … with 33 more rows
+##           diet  n   percent
+##  Invertebrates  5 0.1162791
+##       Omnivore 24 0.5581395
+##           Seed 14 0.3255814
 ```
 
 ```r
-# I am trying to find out if there is any correlation between sparrows' average mass and their diet type. Overall, I'm
+# I am trying to find out the diet types of birds that belong to the Emberizidae family.
 ```
 
 
 Please provide the names of the students you have worked with with during the exam:
 
 ```r
-#just me!
+#Emily Lieu
 ```
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.

@@ -242,7 +242,7 @@ little_fish <- filter(fish, length<=100)   #Filter
 select()
 select(fish, fish_id:length)                                        #select in between fish_id and length
 select(fish, -fish_id, -annnumber, -length, -radii_length_mm)       #pulls everything except certain variables
-select(fish, contains("length"))                                    #only variavles with length in the name
+select(fish, contains("length"))                                    #only variables with length in the name
 select(fish, starts_with("radii"))                                  #what variable starts with
 
 Options to select columns based on a specific criteria include:  

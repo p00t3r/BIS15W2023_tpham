@@ -124,7 +124,11 @@ options(scipen = 999)
 gapminder %>% 
   ggplot(aes(x=gdpPercap, y=lifeExp)) +
   geom_point() +
-  scale_x_log10()
+  scale_x_log10() +
+  labs(title = "GDP Per Capita vs. Life Expectancy",
+       x= "GDP Per Capita",
+       y= "Life Expectancy")
+
 #Yes, having more money helped you live longer.
 ```
 

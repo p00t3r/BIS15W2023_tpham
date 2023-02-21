@@ -129,6 +129,7 @@ p+scale_fill_brewer(palette = "BuPu")+
 You can also use `paleteer` to build a custom palette for consistency. To access the `paleteer` collection, I add it to a new object.
 ```{r}
 colors <- paletteer::palettes_d_names
+colors
 ```
 
 Now we can display the palettes. Assign the palette to `my_palette` and then build this base R bar plot. There are a lot of options; `paleteer` is a collection of popular palettes. I really like the [`ggsci` package] (https://cran.r-project.org/web/packages/ggsci/vignettes/ggsci.html)
@@ -164,12 +165,21 @@ homerange %>%
 ## Practice
 1. Revisit the relationship between mass and homerange using a scatterplot, but color the points by taxonomic class using a custom color theme.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=log10.mass, y=log10.hra, color = taxon)) +
+  scale_colour_brewer(palette = "da_Vinki") +
+  geom_point()
+```
+```{r}
+da_vinki <- paletteer_d("lisa::LeonardodaVinci")
 ```
 
 2. Build bar plots that show the representation by taxonomic class with carnivores and herbivores. Try using a color theme that matches your scatterplot to keep everything consistent.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x=taxon, fill=trophic.guild))+
+  scale_fill_brewer(palette = "da_vinki") +
+  geom_bar(na.rm=T, position="dodge")
 ```
 
 ## Faceting
@@ -265,14 +275,22 @@ ecosphere %>%
 ```
 
 ## Practice
-1. Build a faceted plot that shows a distribution of life expectancy by habitat type.
-```{r}
+1. Build a faceted plot that shows a distribution of log10_mass by habitat type.
 
+```{r}
+ecosphere %>% 
+  ggplot(aes(x=log10_mass))+
+  geom_density()+
+  facet_wrap(~habitat)
 ```
+
 
 2. Try the same plot as #1 above, but include life_expectancy~habitat.
 ```{r}
-
+ecosphere %>% 
+  ggplot(aes(x=log10_mass))+
+  geom_density()+
+  facet_grid(life_expectancy~habitat)
 ```
 
 ## That's it, let's take a break!   

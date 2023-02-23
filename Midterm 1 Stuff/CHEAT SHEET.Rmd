@@ -350,4 +350,165 @@ penguins %>%
 ```
 
 
+**LAB 7.2: FUN WITH NA'S*
 ```{r}
+is.na(msleep)
+any_na(msleep)
+
+msleep %>% 
+  summarize(number_nas = sum(is.na(msleep)))
+
+msleep %>% 
+  summarise_all(~(sum(is.na(.))))
+
+amniota_tidy <- amniota %>%     #Replace -999 with NAs
+  na_if("-999")
+
+naniar::miss_var_summary(amniota_tidy)
+```
+
+*LAB 8.1: pivot_long()*
+
+```{r}
+#`pivot_longer`(cols, names_to, values_to)
+#`cols` - Columns to pivot to longer format
+#'names_to` - Name of the new column; it will contain the column names of gathered columns as values
+#`values_to` - Name of the new column; it will contain the data stored in the values of gathered columns
+```
+
+*LAB 8.2: pivot_wider()*
+
+```{r}
+#`pivot_wider`(names_from, values_from)  
+#`names_from` - Values in the `names_from` column will become new column names  
+#`values_from` - Cell values will be taken from the `values_from` column 
+
+heartrate2 %>% 
+  separate(patient, into= c("patient", "sex"), sep = "_")
+```
+
+*LAB 9.1: ggplot*
+
+```{r}
+geom_point()                          #scatterplot
+geom_bar()                            #bar plot - good for counts! (when there is only one inputted variable
+geom_col()                            #bar plot - when there is 2 inputted variables
+
+geom_jitter()                         #helps with overplotting
+geom_smooth(method=lm, se=T)          #line of best fit
+```
+
+*LAB 10.1: ggplot pt2*
+
+```{r}
+geom_boxplot()
+
++coord_flip()
++scale_y_log10()
+options(scipen = 999)                 #cancels scientific notation
+
+labs(title = "", 
+       x="",
+       y="")
+
++theme(plot.title = element_text(size=rel(1.25), hjust=1))  
+ 
+#adjusting the size and face of the text. `rel()`changes the relative size of the title. Adding `hjust` allows control of title position
+
+elephants %>% 
+  ggplot(aes(x=sex, fill=sex)) +      #fill colors the bars
+  geom_bar()
+
+life_history %>% 
+  ggplot(aes(x=gestation, y=log10(mass), size=mass))+   #`size` adjusts the size of points relative to a continuous variable
+  geom_point(na.rm = T)
+```
+
+
+*LAB 10.2: ggplot pt2*
+
+```{r}
+p+geom_point(aes(shape=thermoregulation, color=thermoregulation), size=1.75)
++ geom_bar(position = "dodge") 
++scale_y_continuous(labels = scales::percent)
+
+homerange %>% 
+  ggplot(aes(x = class, y = log10.mass, group = taxon)) +         #`group` to make individual box plots for each taxon
+  geom_boxplot()
+```
+
+*LAB 11.1: ggplot pt.3*
+
+```{r}
+library(tidyverse)
+library(RColorBrewer)
+library(paletteer)
+library(janitor)
+library(here)
+library(ggthemes)
+
+%>% mutate(year=as_factor(year))   #change year into factor so ggplot lists ALL the years in the graph
+geom_line()
+geom_histogram(alpha = 0.4, color = "black", fill = "deepskyblue4", bins=40)
+grDevices::colors()
+geom_density(fill="deepskyblue4", alpha  =0.4, color = "black")
+
+homerange %>% 
+  ggplot(aes(x=log10.mass)) +
+  geom_histogram(aes(y = ..density..), fill = "deepskyblue4", alpha = 0.4, color = "black")+
+  geom_density(color = "red")+
+  labs(title = "Distribution of Body Mass")                          #Combine both histogram and density.
+
+homerange <- homerange %>% 
+             mutate(mass_category = case_when(log10.mass <= 1.75 ~ "small",
+                                              log10.mass > 1.75 & log10.mass <= 2.75 ~ "medium",
+                                              log10.mass > 2.75 ~ "large"))
+```
+
+
+*LAB 11.2: ggplot pt.3*
+
+```{r}
+#Some basic themes.
+theme_gray(): Gray background color and white grid lines. Put the data forward to make comparisons easy.
+theme_bw(): White background and gray grid lines. May work better for presentations displayed with a projector.
+theme_linedraw(): A theme with black lines of various widths on white backgrounds, reminiscent of a line drawings.
+theme_light(): A theme similar to theme_linedraw() but with light grey lines and axes, to direct more attention towards the
+
+ls("package:ggthemes")[grepl("theme_", ls("package:ggthemes"))]  #list of themes
+
+RColorBrewer:
+  
+display.brewer.pal(4,"GnBu")
++`scale_colour_brewer()` is for points  
++`scale_fill_brewer()` is for fills 
+
+p+scale_fill_brewer(palette = "BuPu")+
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 60, hjust=1))+
+  labs(title = "Observations by Taxon in Homerange Data",
+       x = NULL,
+       y= "n",
+       fill= "Trophic Guild")
+
+colors <- paletteer::palettes_d_names
+colors
+
+my_palette <- paletteer_d("ggprism::flames")
+```
+
+
+```{r}
+#Adjusting the x and y limits
++
+  xlim(0, 4) +
+  ylim(1, 6)
+```
+
+
+```{r}
+#Faceting
+
++ facet_wrap(~migratory_strategy, ncol=4)    #makes a ribbon of panels
++ facet_grid(migratory_strategy~.)           #allows control over the faceted variable; it can be arranged in rows or columns.  rows~columns
++ facet_grid(diet~habitat, scales = "free_y")#allow the comparison of two categorical variables, just remember a~b where a is rows and b is columns

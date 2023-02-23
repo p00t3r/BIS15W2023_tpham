@@ -98,9 +98,9 @@ The variable `ccsmort30rate` is a measure of the overall 30-day mortality rate a
 ```{r}
 surgery %>% 
   filter(asa_status != "NA") %>% 
-  ggplot(aes(x= asa_status, y= bmi, fill = asa_status)) +
-  geom_boxplot() +
-  facet_wrap(~asa_status, ncol=4) +
+  ggplot(aes(x= bmi, fill = asa_status)) +
+  geom_density() +
+  facet_wrap(~asa_status) +
   labs(title = "BMI Distribution by ASA Status",
        x = "ASA Status",
        y= "BMI Level")
@@ -110,13 +110,15 @@ surgery %>%
 
 ```{r}
 surgery %>% 
-  select("ahrq_ccs", "ccsmort30rate", "ccscomplicationrate") %>% 
   group_by(ahrq_ccs) %>% 
-  summarize("Top 5 Procedures associated with highest risk of 30-day mortality" = slice_max("ccsmort30rate"))
+  summarize("avg_mortality" = mean(ccsmort30rate)) %>% 
+  slice_max(avg_mortality, n= 5)
 ```
 ```{r}
 surgery %>% 
-  tabyl(ahrq_ccs)
+  group_by(ahrq_ccs) %>% 
+  summarize("avg_complication" = mean(ccscomplicationrate)) %>% 
+  slice_max(avg_complication, n= 5)
 ```
 
 8. (3 points) Make a plot that compares the `ccsmort30rate` for all listed `ahrq_ccs` procedures.
@@ -136,37 +138,57 @@ surgery %>%
 
 ```{r}
 surgery %>% 
-  pivot_longer()
+  mutate("mort30_count" = as.factor(mort30), "complication_count" = as.factor(complication)) %>% 
+  group_by(month) %>% 
+  count(mort30_count) 
 ```
-
 ```{r}
 surgery %>% 
+  mutate("mort30_count" = as.factor(mort30), "complication_count" = as.factor(complication)) %>% 
   group_by(month) %>% 
-  summarise(ccsmort30rate, ccscomplicationrate) %>% 
-  
+  count(complication_count) 
 ```
 
 10. (4 points) Make a plot that visualizes the chart from question #9. Make sure that the months are on the x-axis. Do a search online and figure out how to order the months Jan-Dec.
 
 ```{r}
 surgery %>% 
-  ggplot(aes(y= ccsmort30rate, x=month)) +
+  select(month, mort30) %>% 
+  mutate("mort30_count" = as.factor(mort30)) %>% 
+  group_by(month) %>% 
+  count(mort30_count) %>% 
+  pivot_wider(names_from = mort30_count,
+              values_from = n) %>% 
+  mutate(death_rate = (Yes/ (Yes + No))) %>% 
+  ggplot(aes(x=month, y= death_rate, fill= month)) +
   geom_col() +
   scale_x_discrete(limits = month.abb) +
-  labs(title = "Overall Mortality Rate by Month",
-       x= "Month",
-       y= "Mortality Rate") 
+  labs(title = "Death Rate by Month",
+       x = "Month",
+       y = "Death Rate")
+  
 ```
 ```{r}
 surgery %>% 
-  ggplot(aes(y= ccscomplicationrate, x=month)) +
+  select(month, complication) %>% 
+  mutate("comp_count" = as.factor(complication)) %>% 
+  group_by(month) %>% 
+  count(complication) %>% 
+  pivot_wider(names_from = complication,
+              values_from = n) %>% 
+  mutate(complication_rate = (Yes/ (Yes + No))) %>% 
+  ggplot(aes(x=month, y= complication_rate, fill = month)) +
   geom_col() +
   scale_x_discrete(limits = month.abb) +
-  labs(title = "Overall Complication Rate by Month",
-       x= "Month",
-       y= "Complication Rate") 
+  labs(title = "Complication Rate by Month",
+       x = "Month",
+       y = "Complication Rate")
 ```
 
+
 Please provide the names of the students you have worked with with during the exam:
+```{r}
+# Emily and Jacob!
+```
 
 Please be 100% sure your exam is saved, knitted, and pushed to your github repository. No need to submit a link on canvas, we will find your exam in your repository.

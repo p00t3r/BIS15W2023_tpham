@@ -301,13 +301,10 @@ server <- function(input, output, session) {
   output$plot <- renderPlot({
     
   wolves %>% 
-  group_by(pop) %>% 
-  filter(sex !="NA") %>% 
-  count(sex) %>% 
-  pivot_wider(names_from = "pop", 
-              values_from = "n") %>%  
+  filter(sex!= "NA") %>% 
+  filter(pop == input$y) %>% 
   ggplot(aes(x=sex, fill=sex)) +
-    geom_col()
+    geom_bar()
     
   })
   session$onSessionEnded(stopApp)

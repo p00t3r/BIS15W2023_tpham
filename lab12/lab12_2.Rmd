@@ -286,6 +286,47 @@ wolves %>%
   geom_bar()+
   facet_wrap(~pop)
 ```
+```{r}
+ui <- dashboardPage(
+  dashboardHeader(title = "Wolves Sex Composition by Population"),
+  dashboardSidebar(disable=T),
+  dashboardBody(
+  selectInput("y", "Select Population", choices = c("AK.PEN", "BAN.JAS", "BC", "DENALI", "ELLES", "GTNP", "INT.AK", "MEXICAN","MI","MT", "N.NWT", "ONT", 
+                                                    "SE.AK", "SNF", "SS.NWT", "YNP", "YUCH"), 
+              selected = "AK.PEN"),
+  plotOutput("plot", width = "500px", height = "400px"))
+)
+
+server <- function(input, output, session) { 
+  output$plot <- renderPlot({
+    
+  wolves %>% 
+  group_by(pop) %>% 
+  filter(sex !="NA") %>% 
+  count(sex) %>% 
+  pivot_wider(names_from = "pop", 
+              values_from = "n") %>%  
+  ggplot(aes(x=sex, fill=sex)) +
+    geom_col()
+    
+  })
+  session$onSessionEnded(stopApp)
+  }
+
+
+shinyApp(ui, server)
+```
+```{r}
+wolves %>% 
+  group_by(pop) %>% 
+  filter(sex !="NA") %>% 
+  count(sex) %>% 
+  pivot_wider(names_from = "pop", 
+              values_from = "n")
+  
+```
+
+
 
 ## Wrap-up  
 Please review the learning goals and be sure to use the code here as a reference when completing the homework.

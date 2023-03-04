@@ -21,11 +21,32 @@ For this exercise, let's use some data on elephants. These data are from Phyllis
 
 1. Load the data and evaluate its structure. Clean as appropriate.
 ```{r}
-
+elephants <- read_csv("data/ElephantsMF.csv")
 ```
 
 2. Make a simple shiny app that produces a scatterplot of age vs. height with reactivity assigned to sex. Make sure to include a title and try to incorporate the reference to the data.
 
 ```{r, eval=F, echo=T}
-
+elephants
 ```
+```{r}
+ui <- fluidPage(titlePanel("Elephants' Age vs. Height by Sex"),
+                radioButtons("sex", "Select Sex", choices=c("M", "F"), selected="M"),
+                plotOutput("plot", width="600px", height="500px")
+)
+
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    
+    elephants %>% 
+      filter(Sex == input$sex) %>% 
+      ggplot(aes(x=Age, y=Height))+ 
+        geom_point() 
+      
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+

@@ -59,7 +59,14 @@ spider_list[[3]]
 ## Practice
 1. Getting an idea of the structure of lists is a bit tricky, especially when there are many elements. Try exploring the elements in `spider_list` using names(), str(), or glimpse(). For names(), you will need to specify an element using [[]].  
 ```{r}
+names(spider_list[[7]])
+```
+```{r}
+glimpse(spider_list[[9]])
+```
 
+```{r}
+str(spider_list[[1]])
 ```
 
 ## Merging Files
@@ -68,6 +75,30 @@ We are fortunate here in that all of our data frames have the same column names.
 spiders_all <- bind_rows(spider_list)
 spiders_all
 ```
+##Naming List Elements
+
+```{r}
+names <- list.files(path = "data/spiders", pattern=" .csv")
+names
+```
+
+```{r}
+names_list <- strsplit(names, split=" .csv")
+names_list
+```
+
+```{r}
+names_vec <- unlist(names_list)
+```
+
+```{r}
+names(spider_list) <- names_vec
+names(spider_list)
+```
+```{r}
+glimpse(spider_list$`Santa Clara`)
+```
+
 
 ## Joining Files
 Sometimes data we need is stored in a separate file or becomes available later and we need to join it to our existing data in order to work with it. Let's use an easy example to explore some of the different types of joins. This section was based on the excellent example provided by [Holly Emblem](https://hollyemblem.medium.com/joining-data-with-dplyr-in-r-874698eb8898).  
@@ -94,28 +125,28 @@ The general syntax for joins is...
 `inner_join`  
 Where did customers 3 and 4 go?
 ```{r}
-inner_exampleDF <- inner_join(table_A, table_B, by="customer_ID")
-inner_exampleDF
+inner_exampleDF <- inner_join(table_A, table_B, by="customer_ID")  
+inner_exampleDF   #only included the customers in common that has all data (merged variables)
 ```
 
 `left_join`
 Where did customer 4 go? Notice the missing data for customer 3.
 ```{r}
 left_exampleDF <- left_join(table_A, table_B, by="customer_ID")
-left_exampleDF
+left_exampleDF    #added the unique variables from Table B to Table A (but did not add new customers)
 ```
 
 `right_join`
 Where did customer 3 go? Notice the missing data for customer 4.
 ```{r}
 right_exampleDF <- right_join(table_A, table_B, by="customer_ID")
-right_exampleDF
+right_exampleDF    #added the unique variables from Table A to Table B (but did not add new customers)
 ```
 
 `full_join`
 ```{r}
 full_exampleDF <- full_join(table_A, table_B, by="customer_ID")
-full_exampleDF
+full_exampleDF    #joined all variables and combined all customers
 ```
 
 `anti_join`
@@ -190,7 +221,19 @@ dateformat5 <- "20200922 170000"
 ## Practice 
 1. Convert each of the examples above using lubridate.
 ```{r}
-
+ymd(dateformat1)
+```
+```{r}
+mdy(dateformat2)
+```
+```{r}
+dmy(dateformat3)
+```
+```{r}
+mdy_hms(dateformat4) 
+```
+```{r}
+ymd_hms(dateformat5)
 ```
 
 ## A few more tricks...
